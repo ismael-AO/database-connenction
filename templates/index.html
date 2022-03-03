@@ -8,7 +8,7 @@
   </head>
   <body>
     <main>
-      <form action="/save" method="post">
+      <form onsubmit="handleOnSubmit(event)">
         <section>
           <label for="username">Username</label>
           <input id="username" type="text" />
@@ -23,4 +23,28 @@
       </form>
     </main>
   </body>
+
+  <script>
+    function handleOnSubmit(e) {
+      e.preventDefault();
+
+      const data = {
+        value1: document.getElementById("username").value,
+        value2: document.getElementById("password").value,
+      };
+      let response = fetch("/save", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((res) => {
+            alert(res.message)
+            document.getElementById("username").value = ""
+            document.getElementById("password").value = ""
+        });
+    }
+  </script>
 </html>
