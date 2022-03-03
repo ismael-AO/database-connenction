@@ -24,9 +24,15 @@ def calculate():
             cur.execute("INSERT INTO users (name,password) VALUES(?, ?)", (data['value1'], data["value2"]))
             con.commit()
 
-        return make_response(jsonify({"message": "Usuario cadastrado com sucesso"}))
+            cur.execute("SELECT name FROM users")
+            con.commit()
+            users = cur.fetchall()
+            print("users", users)
+
+        return make_response(jsonify(users), 200)
     except Exception as ex:
-        return make_response(jsonify({"message": " Erro ao cadastrar usuário"}))
+        print(ex)
+        return make_response(jsonify({"message": " Erro ao cadastrar usuário"}), 403)
 
 
 if __name__ == "__main__":
