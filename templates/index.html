@@ -38,6 +38,7 @@
         email: document.getElementById("email").value,
         endereco: document.getElementById("endereco").value,
       };
+
       let response = fetch("/save", {
         method: "POST",
         headers: {
@@ -51,18 +52,21 @@
           document.getElementById("email").value = "";
           document.getElementById("endereco").value = "";
 
-          const list = document.getElementById("list-user");
-          list.innerHTML = "";
+          console.log(res);
+          if (res.users) {
+            const list = document.getElementById("list-user");
+            list.innerHTML = "";
 
-          res.users.map((user) => {
-            const container = document.createElement("div");
+            res.users.map((user) => {
+              const container = document.createElement("div");
 
-            const span_email = document.createElement("span");
-            span_email.innerText = user.email;
+              const span_email = document.createElement("span");
+              span_email.innerText = user.email;
 
-            container.appendChild(span_email);
-            list.appendChild(container);
-          });
+              container.appendChild(span_email);
+              list.appendChild(container);
+            });
+          }
           alert(res.message);
         });
     }
