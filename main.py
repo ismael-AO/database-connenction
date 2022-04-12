@@ -42,7 +42,7 @@ def index():
 
 
 @app.route("/save", methods=["POST"])
-def calculate():
+def save():
     data = json.loads(request.data.decode("utf-8"))
     
     try:
