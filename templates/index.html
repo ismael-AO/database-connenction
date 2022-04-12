@@ -10,21 +10,22 @@
     <main class="main">
       <form onsubmit="handleOnSubmit(event)">
         <section>
-          <label for="username">Username</label>
-          <input id="username" type="text" />
+          <label for="name">Name</label>
+          <input id="name" type="text" />
         </section>
         <section>
-          <label for="password">Password</label>
-          <input id="password" type="text" />
+          <label for="email">Email</label>
+          <input id="email" type="email" />
+        </section>
+        <section>
+          <label for="endereco">Endereço</label>
+          <input id="endereco" type="text" />
         </section>
         <section>
           <button>Cadastrar</button>
         </section>
       </form>
-      <section>
-        <p>Registered Users</p>
-        <article id="usersList"></article>
-      </section>
+      <section id="list-user"></section>
     </main>
   </body>
 
@@ -33,8 +34,9 @@
       e.preventDefault();
 
       const data = {
-        value1: document.getElementById("username").value,
-        value2: document.getElementById("password").value,
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        endereco: document.getElementById("endereco").value,
       };
       let response = fetch("/save", {
         method: "POST",
@@ -45,15 +47,23 @@
       })
         .then((response) => response.json())
         .then((res) => {
-          document.getElementById("username").value = "";
-          document.getElementById("password").value = "";
+          document.getElementById("name").value = "";
+          document.getElementById("email").value = "";
+          document.getElementById("endereco").value = "";
 
-          res.map((user) => {
-            const UsersElement = document.createElement("p");
-            UsersElement.innerText = user[0];
+          const list = document.getElementById("list-user");
+          list.innerHTML = "";
 
-            document.getElementById("usersList").appendChild(UsersElement);
+          res.users.map((user) => {
+            const container = document.createElement("div");
+
+            const span_email = document.createElement("span");
+            span_email.innerText = user.email;
+
+            container.appendChild(span_email);
+            list.appendChild(container);
           });
+          alert(res.message);
         });
     }
   </script>

@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  database:
+    container_name: flask_db
+    image: postgres
+    volumes:
+      - dbdata:/data/db
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=flask_database
+
+  api:
+    container_name: flask_api
+    build: .
+    volumes:
+      - .:/app/flask_api
+    ports:
+      - "3001:3001"
+    command: ["./wait-for-it.sh", "db:5432", "--", "python", "main.py"]
+
+volumes:
+  dbdata:
